@@ -1,7 +1,9 @@
 import networkx as nx
+import random
 
 
 def gen_ip_graph() -> nx.Graph:
+    random.seed(42)
     graph = nx.Graph()
 
     graph.add_node("Main Router", ip="192.168.0.1")
@@ -12,14 +14,16 @@ def gen_ip_graph() -> nx.Graph:
     for i in range(9):
         graph.add_node(f"User {i + 1}", ip=f"192.168.0.{i + 18}")
 
-    graph.add_edges_from([("Main Router", f"Router {i + 1}") for i in range(3)])
+    graph.add_edges_from([("Main Router", f"Router {i + 1}") for i in range(3)], latency=random.randint(20, 40))
 
     for i in range(0, 3):
         for j in range(0 + i * 3, 3 + i * 3):
-            graph.add_edges_from([(f"Router {i + 1}", f"User {j + 1}")])
+            graph.add_edges_from([(f"Router {i + 1}", f"User {j + 1}")], latency=random.randint(50, 100))
 
-    graph.add_edges_from([("Main Router", f"User {10}", {'ip': '192.168.0.18'}),
-                          ("Main Router", f"User {11}", {'ip': '192.168.0.19'})])
+    graph.add_edges_from([("Main Router", f"User {10}", {'ip': '192.168.0.18', 'latency': random.randint(1, 100)}),
+                          ("Main Router", f"User {11}", {'ip': '192.168.0.19', 'latency': random.randint(1, 100)})
+                          ])
+
     return graph
 
 
@@ -42,17 +46,23 @@ if __name__ == "__main__":
 
     # print(nx.to_dict_of_lists(G))
 
-    fig, axs = plt.subplots(2, 1, figsize=(12, 6))
+    fig, axs = plt.subplots(2, 1, figsize=(12, 12))
 
     options = {
-        "node_color": "yellow",
-        "edge_color": "lightblue",
-        "node_size": 1200,
-        "width": 3,
-        "with_labels": True
+        'node_color': 'lightblue',
+        'node_size': 1000,
+        'with_labels': True,
+        'font_size': 10,
+        'font_color': 'black',
+        'font_weight': 'bold',
+        'edge_color': 'gray',
+        'width': 2,
     }
 
-    nx.draw(G, ax=axs[0], **options)
+    nx.draw(G, pos=nx.spring_layout(G, seed=42), ax=axs[0], **options)
+    edge_labels = {(u, v): f"{data['latency']} ms" for u, v, data in G.edges(data=True)}
+    nx.draw_networkx_edge_labels(G, pos=nx.spring_layout(G, seed=42), edge_labels=edge_labels, ax=axs[0])
+
     axs[0].set_title('Graph Visualization', fontsize=16, fontstyle="italic")
 
     info_text = f"Number of Nodes: {num_nodes}\nNumber of Edges: {num_edges}\nConnected: {is_connected}"
