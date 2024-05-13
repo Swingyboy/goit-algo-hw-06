@@ -1,0 +1,47 @@
+<html>
+<head>
+    <style>
+        * {
+            font-family: sans-serif;
+        }
+        body {
+            padding: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            text-align: right;
+        }
+        table tr {
+            border-bottom: 1px solid;
+            font-size: 10px;
+        }
+        table th, table td {
+            padding: 10px 20px;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Big(O) Report for searching algorithms</h1>
+<h2>Summary</h2>
+<p>The tests were executed for {{algorithms}} algorithms. Each test was performed for {{runs_number}} times.</p>
+<p>The search was executed for all nodes these are present in graph</p>
+<p>The results are presented in the table below and on the plot.</p>
+<h2>Results</h2>
+<h3>Table with average time</h3>
+<p>The table with average time of calculation for each algorithm per degree centrality of the node:</p>
+{{ my_table }}
+<h3>Plot</h3>
+<p>Time dependencies on node degree centrality for each algorithm:</p>
+<img src='plot.svg' width="1200">
+<h3>Conclusion</h3>
+<p>Based on the results, the following conclusions can be made:</p>
+<ul>
+    <li><b>Algorithm Suitability:</b> The choice between breadth-first search (BFS) and depth-first search (DFS) depends on the specific characteristics of the network topology. Neither algorithm consistently outperforms the other across all nodes.</li>
+    <li><b>AVariable Performance:</b> BFS and DFS exhibit variable performance across different nodes. Factors such as node degree and position within the network hierarchy likely influence algorithm efficiency.</li>
+    <li><b>Trade-offs:</b>  Users must weigh the trade-offs between execution time and accuracy in degree centrality calculations when selecting an algorithm. While DFS may be faster for certain nodes, BFS might provide more accurate centrality measures in other cases.</li>
+    <li><b>Node Specificity:</b> The performance of BFS and DFS is node-specific, suggesting that algorithm selection should consider individual node characteristics and connectivity patterns within the network.</li>
+</ul>
+</body>
+</html>

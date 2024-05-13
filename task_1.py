@@ -40,6 +40,8 @@ if __name__ == "__main__":
     num_edges = G.number_of_edges()
     is_connected = nx.is_connected(G)
 
+    # print(nx.to_dict_of_lists(G))
+
     fig, axs = plt.subplots(2, 1, figsize=(12, 6))
 
     options = {
