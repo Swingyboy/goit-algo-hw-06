@@ -1,19 +1,18 @@
 import networkx as nx
 from task_1 import gen_ip_graph
+from task_utils.algorithms import dijkstra
 
 
 def main():
     graph = gen_ip_graph()
 
-    shortest_paths = dict(nx.all_pairs_dijkstra_path(graph, weight='latency'))
-
-    # Print shortest paths between all pairs of nodes
-    for source in shortest_paths:
-        for target in shortest_paths[source]:
-            if source != target:
-                path = shortest_paths[source][target]
-                path_length = nx.dijkstra_path_length(graph, source, target, weight='latency')
-                print(f"Shortest path from {source} to {target}: {path} (length: {path_length} ms)")
+    for node in graph.nodes:
+        for other_node in graph.nodes:
+            if node == other_node:
+                continue
+            path, distance = dijkstra(graph, node, other_node, "latency")
+            print(f"Shortest latency from {node} to {other_node}: {path}")
+            print(f"Distance from {node} to {other_node}: {distance} ms")
 
 
 if __name__ == "__main__":
